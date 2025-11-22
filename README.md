@@ -79,4 +79,4 @@ Implementação de um mecanismo de leitura seguro que impede o programa de trava
 * **Implementar persitência de dados**
 * **Criar uma interface gráfica simples**
 
-```Desenvolvido por Leandro T. Rosendo```
+## Desenvolvido por Leandro T. Rosendo
