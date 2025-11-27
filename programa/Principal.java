@@ -76,6 +76,7 @@ public class Principal {
 		System.out.println("7 - Excluir Produto");
 		System.out.println("8 - Excluir Fornecedor");
 		System.out.println("9 - Sair");
+		System.out.println("Escolha: ");
 	}
 	
 	private static Produto criarProduto() {
