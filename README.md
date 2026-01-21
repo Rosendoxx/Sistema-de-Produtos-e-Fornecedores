@@ -47,7 +47,7 @@ fornecedores.entrySet()
 
 ### 2. Validação de Entrada Robusta
 
-Implementação de um mecanismo de leitura seguro que impede o programa de travar (crash) caso o usuário digite um input inesperado:
+Implementação de um mecanismo de leitura seguro que impede o view de travar (crash) caso o usuário digite um input inesperado:
 
 ```public static int lerInt() {
     while(true) {
@@ -70,10 +70,10 @@ Implementação de um mecanismo de leitura seguro que impede o programa de trava
     git clone https://github.com/Rosendoxx/Sistema-de-Produtos-e-Fornecedores.git
 
 **2º Compile os arquivos**
-    javac -d bin Sistema-de-Produtos-e-Fornecedores/programa*.java Sistema-de-Produtos-e-Fornecedores/modelo*.java
+    javac -d bin Sistema-de-Produtos-e-Fornecedores/view*.java Sistema-de-Produtos-e-Fornecedores/model*.java
 
-**3º Execute o programa**
-    java -cp bin programa.Principal
+**3º Execute o view**
+    java -cp bin view.Main
 
 ### 4. Melhorias futuras:
 * **Implementar persitência de dados**

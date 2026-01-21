@@ -1,15 +1,16 @@
-package programa;
+package
+view;
 
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Scanner;
 
-import modelo.Categoria;
-import modelo.Fornecedor;
-import modelo.Produto;
+import model.Categoria;
+import model.Fornecedor;
+import model.Produto;
 
-public class Principal {
+public class Main {
 	private static Map<Integer, Produto> produtos = new HashMap<Integer, Produto>();
 	private static Map<Integer, Fornecedor> fornecedores = new HashMap<Integer, Fornecedor>();
 	private static int indexProduto = 0;
