@@ -1,11 +1,11 @@
 package
 view;
 
-import java.util.HashMap;
-import java.util.InputMismatchException;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
+import dao.CategoriaDAO;
+import dao.FornecedorDAO;
+import dao.ProdutoDAO;
 import model.Categoria;
 import model.Fornecedor;
 import model.Produto;
@@ -13,6 +13,9 @@ import model.Produto;
 public class Main {
 	private static Map<Integer, Produto> produtos = new HashMap<Integer, Produto>();
 	private static Map<Integer, Fornecedor> fornecedores = new HashMap<Integer, Fornecedor>();
+	private static ProdutoDAO pdao = new ProdutoDAO();
+	private static FornecedorDAO fdao = new FornecedorDAO();
+	private static CategoriaDAO cdao = new CategoriaDAO();
 	private static int indexProduto = 0;
 	private static int indexFornecedor = 0;
 	private static Scanner in = new Scanner(System.in);
@@ -25,21 +28,33 @@ public class Main {
 			switch (opcao) {
 			case 1:
 				System.out.println("==== CRIANDO PRODUTO ====");
-				produtos.put(indexProduto, criarProduto());
+				Produto p = null;
+				while(Objects.isNull(p)){
+					p = criarProduto();
+					if(Objects.isNull(p)) System.out.println("Erro ao criar fornecedor\nTente novamente: ");
+				}
+				produtos.put(indexProduto, p);
+				pdao.inserir(p);
 				indexProduto++;
 				break;
 			case 2:
 				System.out.println("==== CRIANDO FORNECEDOR ====");
-				fornecedores.put(indexFornecedor, criarFornecedor());
+				Fornecedor f = null;
+				while(Objects.isNull(f)){
+					f = criarFornecedor();
+					if(Objects.isNull(f)) System.out.println("Erro ao criar fornecedor\nTente novamente: ");
+				}
+				fornecedores.put(indexFornecedor, f);
+				fdao.inserir(f);
 				indexFornecedor++;
 				break;
 			case 3:
 				System.out.println("==== LISTANDO PRODUTOS ====");
-				listarProdutos();
+				pdao.buscarTodos().forEach(produto -> System.out.println(produto));
 				break;
 			case 4:
 				System.out.println("==== LISTANDO FORNECEDORES ====");
-				listarFornecedores();
+				fdao.buscarTodos().forEach(fornecedor -> System.out.println(fornecedor));
 				break;
 			case 5:
 				System.out.println("==== ALTERANDO PRODUTO ====");
@@ -282,15 +297,19 @@ public class Main {
 			switch(lerInt()) {
 			case 1:
 				alterarNome(produto);
+				pdao.atualizar(produto, "nome", produto.getNome(), "id" , String.valueOf(produto.getId()));
 				return;
 			case 2:
 				alterarPreco(produto);
+				pdao.atualizar(produto, "preco", String.valueOf(produto.getPreco()), "id" , String.valueOf(produto.getId()));
 				return;
 			case 3:
 				alterarFornecedor(produto, encontrarFornecedor(lerInt()));
+				pdao.atualizar(produto, "id_fornecedor", String.valueOf(produto.getFornecedor().getIdFornecedor()), "id" , String.valueOf(produto.getId()));
 				return;
 			case 4:
 				alterarCategoria(produto);
+				pdao.atualizar(produto, "id_categoria", String.valueOf(produto.getCategoria().ordinal()), "id" , String.valueOf(produto.getId()));
 				return;
 			default:
 				System.out.println("Opção inválida\nTente novamente ");
@@ -308,12 +327,15 @@ public class Main {
 			switch(lerInt()) {
 			case 1:
 				alterarNome(fornecedor);
+				fdao.atualizar(fornecedor, "nome", fornecedor.getNome(), "id", String.valueOf(fornecedor.getIdFornecedor()));
 				return;
 			case 2:
 				alterarCnpj(fornecedor);
+				fdao.atualizar(fornecedor, "cnpj", fornecedor.getCnpj(), "id", String.valueOf(fornecedor.getIdFornecedor()));
 				return;
 			case 3:
 				alterarTelefone(fornecedor);
+				fdao.atualizar(fornecedor, "telefone", fornecedor.getTelefone(), "id", String.valueOf(fornecedor.getIdFornecedor()));
 				return;
 			default:
 				System.out.println("Opção inválida\nTente novamente ");

@@ -60,7 +60,7 @@ public abstract class GenericDAO <E, T> {
         return null;
     }
 
-    public void atualizar(E objeto, String parametro, String atualizacao, String identificador, String objetoIdentificador){
+    public void atualizar(T objeto, String parametro, String atualizacao, String identificador, String objetoIdentificador){
         String sql = "UPDATE ? SET ? = ? WHERE ? = ?";
 
         try(PreparedStatement stmt = connection.prepareStatement(sql)){
