@@ -1,0 +1,50 @@
+package dao;
+
+import model.Categoria;
+import model.Fornecedor;
+import model.Produto;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class ProdutoDAO extends GenericDAO<ProdutoDAO, Produto>{
+    private final FornecedorDAO FDAO = new FornecedorDAO();
+    private final CategoriaDAO CDAO = new CategoriaDAO();
+
+    @Override
+    protected String getInsertSQL() {
+        return "INSERT INTO Produto (id, nome, preco, fornecedor, categoria) VALUES (?, ?, ?, ?, ?)";
+    }
+
+    @Override
+    protected String getSelectAllSQL() {
+        return "SELECT * FROM Produto";
+    }
+
+    @Override
+    protected String getSelectByIdSQL() {
+        return "SELECT * FROM Produto WHERE id = ?";
+    }
+
+    @Override
+    protected void setInsertParametros(PreparedStatement stmt, Produto p) throws SQLException {
+        stmt.setInt(1, p.getId());
+        stmt.setString(2, p.getNome());
+        stmt.setDouble(3, p.getPreco());
+        stmt.setInt(4, p.getFornecedor().getIdFornecedor());
+        stmt.setInt(5, p.getCategoria().ordinal());
+    }
+
+    @Override
+    protected Produto mapResultSet(ResultSet rs) throws SQLException {
+        int id = rs.getInt("id");
+        String nome = rs.getString("nome");
+        double preco = rs.getDouble("preco");
+        int idFornecedor = rs.getInt("id_fornecedor");
+        int idCategoria = rs.getInt("id_categoria");
+        Fornecedor fornecedor = FDAO.buscarPorId(idFornecedor);
+        Categoria categoria = CDAO.buscarPorId(idCategoria);
+        return new Produto(id, nome, preco, fornecedor, categoria);
+    }
+}

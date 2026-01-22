@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
-public abstract class GenericDAO <E> {
+public abstract class GenericDAO <E, T> {
     protected Connection connection;
 
     public GenericDAO(){
@@ -18,10 +18,10 @@ public abstract class GenericDAO <E> {
     protected abstract String getInsertSQL();
     protected abstract String getSelectAllSQL();
     protected abstract String getSelectByIdSQL();
-    protected abstract void setInsertParametros(PreparedStatement stmt, E entidade) throws SQLException;
-    protected abstract E mapResultSet(ResultSet rs) throws SQLException;
+    protected abstract void setInsertParametros(PreparedStatement stmt, T entidadeOrigem) throws SQLException;
+    protected abstract T mapResultSet(ResultSet rs) throws SQLException;
 
-    public void inserir(E entidade){
+    public void inserir(T entidade){
         try (PreparedStatement stmt = connection.prepareStatement(getInsertSQL())){
             setInsertParametros(stmt, entidade);
             stmt.executeUpdate();
@@ -31,12 +31,12 @@ public abstract class GenericDAO <E> {
         }
     }
 
-    public List<E> buscarTodos(){
-        List<E> lista = new ArrayList<E>();
+    public List<T> buscarTodos(){
+        List<T> lista = new ArrayList<T>();
 
         try(PreparedStatement stmt = connection.prepareStatement(getSelectAllSQL()); ResultSet rs = stmt.executeQuery()){
             while(rs.next()){
-                E entidade = mapResultSet(rs);
+                T entidade = mapResultSet(rs);
                 lista.add(entidade);
             }
         } catch(SQLException e){
@@ -45,7 +45,7 @@ public abstract class GenericDAO <E> {
         return lista;
     }
 
-    public E buscarPorId(Integer id){
+    public T buscarPorId(Integer id){
         try(PreparedStatement stmt = connection.prepareStatement(getSelectByIdSQL())){
             stmt.setInt(1, id);
 
