@@ -13,14 +13,16 @@ import model.Produto;
 public class Main {
 	private static Map<Integer, Produto> produtos = new HashMap<Integer, Produto>();
 	private static Map<Integer, Fornecedor> fornecedores = new HashMap<Integer, Fornecedor>();
-	private static ProdutoDAO pdao = new ProdutoDAO();
-	private static FornecedorDAO fdao = new FornecedorDAO();
+	private static final ProdutoDAO PDAO = new ProdutoDAO();
+	private static final FornecedorDAO FDAO = new FornecedorDAO();
 	private static CategoriaDAO cdao = new CategoriaDAO();
 	private static int indexProduto = 0;
 	private static int indexFornecedor = 0;
-	private static Scanner in = new Scanner(System.in);
+	private static final Scanner IN = new Scanner(System.in);
 	
 	public static void main(String[] args) {
+		produtos = PDAO.buscarTodos();
+		fornecedores = FDAO.buscarTodos();
 		int opcao = 0;
 		while(opcao!=9) {
 			menu();
@@ -34,7 +36,7 @@ public class Main {
 					if(Objects.isNull(p)) System.out.println("Erro ao criar fornecedor\nTente novamente: ");
 				}
 				produtos.put(indexProduto, p);
-				pdao.inserir(p);
+				PDAO.inserir(p);
 				indexProduto++;
 				break;
 			case 2:
@@ -45,16 +47,16 @@ public class Main {
 					if(Objects.isNull(f)) System.out.println("Erro ao criar fornecedor\nTente novamente: ");
 				}
 				fornecedores.put(indexFornecedor, f);
-				fdao.inserir(f);
+				FDAO.inserir(f);
 				indexFornecedor++;
 				break;
 			case 3:
 				System.out.println("==== LISTANDO PRODUTOS ====");
-				pdao.buscarTodos().forEach(produto -> System.out.println(produto));
+				listarProdutos();
 				break;
 			case 4:
 				System.out.println("==== LISTANDO FORNECEDORES ====");
-				fdao.buscarTodos().forEach(fornecedor -> System.out.println(fornecedor));
+				listarFornecedores();
 				break;
 			case 5:
 				System.out.println("==== ALTERANDO PRODUTO ====");
@@ -102,7 +104,7 @@ public class Main {
 		Categoria categoria;
 		
 		System.out.println("Digite o nome do produto: ");
-		nome = in.nextLine();
+		nome = IN.nextLine();
 		System.out.println("Digite o preço do produto: ");
 		preco = lerDouble();
 		System.out.println("Digite o id do fornecedor do produto: ");
@@ -121,11 +123,11 @@ public class Main {
 		String nome, cnpj, telefone;
 		
 		System.out.println("Digite o nome do fornecedor:");
-		nome = in.nextLine();
+		nome = IN.nextLine();
 		System.out.println("Digite o CNPJ do fornecedor: ");
-		cnpj = in.nextLine();
+		cnpj = IN.nextLine();
 		System.out.println("Digite o telefone do fornecedor: ");
-		telefone = in.nextLine();
+		telefone = IN.nextLine();
 		
 		return new Fornecedor(indexFornecedor, nome, cnpj, telefone);
 	}
@@ -297,19 +299,19 @@ public class Main {
 			switch(lerInt()) {
 			case 1:
 				alterarNome(produto);
-				pdao.atualizar(produto, "nome", produto.getNome(), "id" , String.valueOf(produto.getId()));
+				PDAO.atualizar(produto, "nome", produto.getNome(), "id" , String.valueOf(produto.getId()));
 				return;
 			case 2:
 				alterarPreco(produto);
-				pdao.atualizar(produto, "preco", String.valueOf(produto.getPreco()), "id" , String.valueOf(produto.getId()));
+				PDAO.atualizar(produto, "preco", String.valueOf(produto.getPreco()), "id" , String.valueOf(produto.getId()));
 				return;
 			case 3:
 				alterarFornecedor(produto, encontrarFornecedor(lerInt()));
-				pdao.atualizar(produto, "id_fornecedor", String.valueOf(produto.getFornecedor().getIdFornecedor()), "id" , String.valueOf(produto.getId()));
+				PDAO.atualizar(produto, "id_fornecedor", String.valueOf(produto.getFornecedor().getIdFornecedor()), "id" , String.valueOf(produto.getId()));
 				return;
 			case 4:
 				alterarCategoria(produto);
-				pdao.atualizar(produto, "id_categoria", String.valueOf(produto.getCategoria().ordinal()), "id" , String.valueOf(produto.getId()));
+				PDAO.atualizar(produto, "id_categoria", String.valueOf(produto.getCategoria().ordinal()), "id" , String.valueOf(produto.getId()));
 				return;
 			default:
 				System.out.println("Opção inválida\nTente novamente ");
@@ -327,15 +329,15 @@ public class Main {
 			switch(lerInt()) {
 			case 1:
 				alterarNome(fornecedor);
-				fdao.atualizar(fornecedor, "nome", fornecedor.getNome(), "id", String.valueOf(fornecedor.getIdFornecedor()));
+				FDAO.atualizar(fornecedor, "nome", fornecedor.getNome(), "id", String.valueOf(fornecedor.getIdFornecedor()));
 				return;
 			case 2:
 				alterarCnpj(fornecedor);
-				fdao.atualizar(fornecedor, "cnpj", fornecedor.getCnpj(), "id", String.valueOf(fornecedor.getIdFornecedor()));
+				FDAO.atualizar(fornecedor, "cnpj", fornecedor.getCnpj(), "id", String.valueOf(fornecedor.getIdFornecedor()));
 				return;
 			case 3:
 				alterarTelefone(fornecedor);
-				fdao.atualizar(fornecedor, "telefone", fornecedor.getTelefone(), "id", String.valueOf(fornecedor.getIdFornecedor()));
+				FDAO.atualizar(fornecedor, "telefone", fornecedor.getTelefone(), "id", String.valueOf(fornecedor.getIdFornecedor()));
 				return;
 			default:
 				System.out.println("Opção inválida\nTente novamente ");
@@ -347,10 +349,10 @@ public class Main {
 	private static void alterarNome(Object obj) {
 		System.out.println("Digite o novo nome: ");
 		if(obj instanceof Produto) {
-			((Produto)obj).setNome(in.nextLine());
+			((Produto)obj).setNome(IN.nextLine());
 			System.out.println(((Produto)obj));
 		} else if(obj instanceof Fornecedor) {
-			((Fornecedor)obj).setNome(in.nextLine());
+			((Fornecedor)obj).setNome(IN.nextLine());
 			System.out.println(((Fornecedor)obj));
 		}
 	}
@@ -380,13 +382,13 @@ public class Main {
 	
 	private static void alterarCnpj(Fornecedor fornecedor) {
 		System.out.println("Digite o novo CNPJ: ");
-		fornecedor.setCnpj(in.nextLine());
+		fornecedor.setCnpj(IN.nextLine());
 		System.out.println(fornecedor);
 	}
 	
 	private static void alterarTelefone(Fornecedor fornecedor) {
 		System.out.println("Digite o novo telefone: ");
-		fornecedor.setTelefone(in.nextLine());
+		fornecedor.setTelefone(IN.nextLine());
 		System.out.println(fornecedor);
 	}
 	
@@ -394,10 +396,10 @@ public class Main {
 		int i = 0;
 		while(true) {
 			try {
-				i = in.nextInt(); in.nextLine();
+				i = IN.nextInt(); IN.nextLine();
 				return i;
 			} catch(InputMismatchException e) {
-				in.nextLine();
+				IN.nextLine();
 				System.out.println("Informe um número inteiro! \nTente novamente:");
 			}
 		}
@@ -407,10 +409,10 @@ public class Main {
 		double d = 0.0;
 		while(true) {
 			try {
-				d = in.nextDouble(); in.nextLine();
+				d = IN.nextDouble(); IN.nextLine();
 				return d;
 			} catch(InputMismatchException e) {
-				in.nextLine();
+				IN.nextLine();
 				System.out.println("Informe um número double! \nTente novamente:");
 			}
 		}

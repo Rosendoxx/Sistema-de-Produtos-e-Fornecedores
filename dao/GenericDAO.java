@@ -31,18 +31,19 @@ public abstract class GenericDAO <E, T> {
         }
     }
 
-    public List<T> buscarTodos(){
-        List<T> lista = new ArrayList<T>();
+    public Map<Integer, T> buscarTodos(){
+        Map<Integer, T> mapa = new HashMap<Integer, T>();
 
         try(PreparedStatement stmt = connection.prepareStatement(getSelectAllSQL()); ResultSet rs = stmt.executeQuery()){
             while(rs.next()){
                 T entidade = mapResultSet(rs);
-                lista.add(entidade);
+                Integer id = rs.getInt("id");
+                mapa.put(id,entidade);
             }
         } catch(SQLException e){
             throw new RuntimeException("Erro ao buscar "+e);
         }
-        return lista;
+        return mapa;
     }
 
     public T buscarPorId(Integer id){
