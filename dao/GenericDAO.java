@@ -18,6 +18,7 @@ public abstract class GenericDAO <E, T> {
     protected abstract String getInsertSQL();
     protected abstract String getSelectAllSQL();
     protected abstract String getSelectByIdSQL();
+    protected abstract String getTableName();
     protected abstract void setInsertParametros(PreparedStatement stmt, T entidadeOrigem) throws SQLException;
     protected abstract T mapResultSet(ResultSet rs) throws SQLException;
 
@@ -31,19 +32,18 @@ public abstract class GenericDAO <E, T> {
         }
     }
 
-    public Map<Integer, T> buscarTodos(){
-        Map<Integer, T> mapa = new HashMap<Integer, T>();
+    public List<T> buscarTodos(){
+        List<T> lista = new ArrayList<T>();
 
         try(PreparedStatement stmt = connection.prepareStatement(getSelectAllSQL()); ResultSet rs = stmt.executeQuery()){
             while(rs.next()){
                 T entidade = mapResultSet(rs);
-                Integer id = rs.getInt("id");
-                mapa.put(id,entidade);
+                lista.add(entidade);
             }
         } catch(SQLException e){
             throw new RuntimeException("Erro ao buscar "+e);
         }
-        return mapa;
+        return lista;
     }
 
     public T buscarPorId(Integer id){
@@ -78,13 +78,11 @@ public abstract class GenericDAO <E, T> {
 
     }
 
-    public void excluir(E objeto, String identificador, String objetoIdentificador){
-        String sql = "DELETE FROM ? WHERE ? = ?";
+    public void excluir(int id){
+        String sql = "DELETE FROM "+ getTableName()+" WHERE id = ?";
 
         try(PreparedStatement stmt = connection.prepareStatement(sql)){
-            stmt.setString(1, String.valueOf(objeto.getClass()));
-            stmt.setString(2, identificador);
-            stmt.setString(3, objetoIdentificador);
+            stmt.setInt(1, id);
             stmt.executeUpdate();
             System.out.println("Objeto excluido com sucesso");
         } catch(SQLException e){

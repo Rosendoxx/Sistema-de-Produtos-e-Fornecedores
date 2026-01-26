@@ -23,6 +23,11 @@ public class FornecedorDAO extends GenericDAO<FornecedorDAO, Fornecedor> {
     }
 
     @Override
+    protected String getTableName() {
+        return "Fornecedor";
+    }
+
+    @Override
     protected void setInsertParametros(PreparedStatement stmt, Fornecedor f) throws SQLException {
         stmt.setInt(1, f.getIdFornecedor());
         stmt.setString(2, f.getNome());

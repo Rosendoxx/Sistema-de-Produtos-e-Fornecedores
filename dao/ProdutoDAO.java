@@ -28,6 +28,11 @@ public class ProdutoDAO extends GenericDAO<ProdutoDAO, Produto>{
     }
 
     @Override
+    protected String getTableName() {
+        return "Produto";
+    }
+
+    @Override
     protected void setInsertParametros(PreparedStatement stmt, Produto p) throws SQLException {
         stmt.setInt(1, p.getId());
         stmt.setString(2, p.getNome());
