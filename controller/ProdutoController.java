@@ -55,4 +55,15 @@ public class ProdutoController {
             System.out.println("Erro ao salvar produto no banco de dados "+e);
         }
     }
+
+    public void excluir(int id){
+        try{
+            pdao.excluir(id);
+            System.out.println("Produto excluído com sucesso");
+        } catch(RuntimeException e){
+            System.out.println("Erro ao excluir produto "+e);
+        }
+    }
+
+
 }
