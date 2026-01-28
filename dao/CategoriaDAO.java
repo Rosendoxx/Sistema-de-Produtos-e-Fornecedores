@@ -29,13 +29,14 @@ public class CategoriaDAO extends GenericDAO<CategoriaDAO, Categoria> {
 
     @Override
     protected void setInsertParametros(PreparedStatement stmt, Categoria entidadeOrigem) throws SQLException {
-        stmt.setInt(1, entidadeOrigem.ordinal());
-        stmt.setString(1, entidadeOrigem.name());
+        stmt.setInt(1, entidadeOrigem.getId());
+        stmt.setString(1, entidadeOrigem.getNome());
     }
 
     @Override
     protected Categoria mapResultSet(ResultSet rs) throws SQLException {
         int id = rs.getInt("id");
-        return Categoria.getPorId(id);
+        String nome = rs.getString("nome");
+        return new Categoria(id, nome);
     }
 }
