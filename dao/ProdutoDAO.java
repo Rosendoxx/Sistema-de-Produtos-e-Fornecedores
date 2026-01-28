@@ -38,7 +38,7 @@ public class ProdutoDAO extends GenericDAO<ProdutoDAO, Produto>{
         stmt.setString(2, p.getNome());
         stmt.setDouble(3, p.getPreco());
         stmt.setInt(4, p.getFornecedor().getIdFornecedor());
-        stmt.setInt(5, p.getCategoria().ordinal());
+        stmt.setInt(5, p.getCategoria().getId());
     }
 
     @Override
@@ -51,5 +51,22 @@ public class ProdutoDAO extends GenericDAO<ProdutoDAO, Produto>{
         Fornecedor fornecedor = FDAO.buscarPorId(idFornecedor);
         Categoria categoria = CDAO.buscarPorId(idCategoria);
         return new Produto(id, nome, preco, fornecedor, categoria);
+    }
+
+    @Override
+    protected void atualizar(Produto entidade) {
+        String sql = "UPDATE Produto SET nome = ?, preco = ?, id_fornecedor = ?, id_categoria = ? WHERE id = ?";
+
+        try(PreparedStatement stmt = connection.prepareStatement(sql)){
+            stmt.setString(1, entidade.getNome());
+            stmt.setDouble(2, entidade.getPreco());
+            stmt.setInt(3, entidade.getFornecedor().getIdFornecedor());
+            stmt.setInt(4,entidade.getCategoria().getId());
+            stmt.setInt(5, entidade.getId());
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao atualizar produto "+e);
+        }
     }
 }

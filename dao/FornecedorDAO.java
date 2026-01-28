@@ -44,4 +44,20 @@ public class FornecedorDAO extends GenericDAO<FornecedorDAO, Fornecedor> {
 
         return new Fornecedor(idFornecedor, nome, cnpj, telefone);
     }
+
+    @Override
+    protected void atualizar(Fornecedor entidade) {
+        String sql = "UPDATE Fornecedor SET nome = ?, cnpj = ?, telefone = ? WHERE id = ?";
+
+        try(PreparedStatement stmt = connection.prepareStatement(sql)){
+            stmt.setString(1, entidade.getNome());
+            stmt.setString(2, entidade.getCnpj());
+            stmt.setString(3, entidade.getTelefone());
+            stmt.setInt(4, entidade.getIdFornecedor());
+
+            stmt.executeUpdate();
+        } catch(SQLException e){
+            throw new RuntimeException("Erro ao atualizar fornecedor "+e);
+        }
+    }
 }

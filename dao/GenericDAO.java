@@ -21,6 +21,7 @@ public abstract class GenericDAO <E, T> {
     protected abstract String getTableName();
     protected abstract void setInsertParametros(PreparedStatement stmt, T entidadeOrigem) throws SQLException;
     protected abstract T mapResultSet(ResultSet rs) throws SQLException;
+    protected abstract void atualizar(T entidade);
 
     public void inserir(T entidade){
         try (PreparedStatement stmt = connection.prepareStatement(getInsertSQL())){
@@ -59,23 +60,6 @@ public abstract class GenericDAO <E, T> {
             throw new RuntimeException("Erro ao buscar objeto "+e);
         }
         return null;
-    }
-
-    public void atualizar(T objeto, String parametro, String atualizacao, String identificador, String objetoIdentificador){
-        String sql = "UPDATE ? SET ? = ? WHERE ? = ?";
-
-        try(PreparedStatement stmt = connection.prepareStatement(sql)){
-            stmt.setString(1, String.valueOf(objeto.getClass()));
-            stmt.setString(2, parametro);
-            stmt.setString(3, atualizacao);
-            stmt.setString(4, identificador);
-            stmt.setString(5, objetoIdentificador);
-            stmt.executeUpdate();
-            System.out.println("Objeto atualizado com sucesso!");
-        } catch(SQLException e){
-            throw new RuntimeException("Erro ao atualizar objeto "+e);
-        }
-
     }
 
     public void excluir(int id){

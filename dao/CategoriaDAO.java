@@ -39,4 +39,18 @@ public class CategoriaDAO extends GenericDAO<CategoriaDAO, Categoria> {
         String nome = rs.getString("nome");
         return new Categoria(id, nome);
     }
+
+    @Override
+    protected void atualizar(Categoria entidade) {
+        String sql = "UPDATE Categoria SET nome = ? WHERE id = ?";
+
+        try(PreparedStatement stmt = connection.prepareStatement(sql)){
+            stmt.setString(1, entidade.getNome());
+            stmt.setInt(2, entidade.getId());
+
+            stmt.executeUpdate();
+        } catch(SQLException e){
+            throw new RuntimeException("Erro ao atualizar categoria "+e);
+        }
+    }
 }
