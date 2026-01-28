@@ -41,7 +41,7 @@ public class CategoriaDAO extends GenericDAO<Categoria> {
     }
 
     @Override
-    protected void atualizar(Categoria entidade) {
+    public void atualizar(Categoria entidade) {
         String sql = "UPDATE Categoria SET nome = ? WHERE id = ?";
 
         try(PreparedStatement stmt = connection.prepareStatement(sql)){

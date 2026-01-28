@@ -14,10 +14,6 @@ public class FornecedorController {
         this.fdao = new FornecedorDAO();
     }
 
-    public List<Fornecedor> listarTodos(){
-        return new ArrayList<>(fdao.buscarTodos());
-    }
-
     public void cadastrar(int id, String nome, String cnpj, String telefone){
         Fornecedor f = fdao.buscarPorId(id);
         if(!Objects.isNull(f)){
@@ -30,6 +26,41 @@ public class FornecedorController {
             System.out.println("Fornecedor inserido com sucesso!");
         } catch (RuntimeException e){
             System.out.println("Erro ao inserir usuário "+e+"\nTente novamente!");
+        }
+    }
+
+    public List<Fornecedor> listarTodos(){
+        return new ArrayList<>(fdao.buscarTodos());
+    }
+
+    public void atualizar(int id, int parametro, String valor){
+        Fornecedor atualizadoFornecedor = fdao.buscarPorId(id);
+
+        if(Objects.isNull(atualizadoFornecedor)){
+            System.out.println("Fornecedor não encontrado");
+            return;
+        }
+
+        switch (parametro){
+            case 1: //Nome
+                atualizadoFornecedor.setNome(valor);
+                break;
+            case 2: //CNPJ
+                atualizadoFornecedor.setCnpj(valor);
+                break;
+            case 3: //Telefone
+                atualizadoFornecedor.setTelefone(valor);
+                break;
+            default:
+                System.out.println("Parametro inválido\nNão foi possível atualizar o fornecedor");
+                return;
+        }
+
+        try{
+            fdao.atualizar(atualizadoFornecedor);
+            System.out.println("Fornecedor atualizado com sucesso");
+        } catch(RuntimeException e){
+            System.out.println("Erro ao atualizar o fornecedor. "+e);
         }
     }
 

@@ -46,7 +46,7 @@ public class FornecedorDAO extends GenericDAO<Fornecedor> {
     }
 
     @Override
-    protected void atualizar(Fornecedor entidade) {
+    public void atualizar(Fornecedor entidade) {
         String sql = "UPDATE Fornecedor SET nome = ?, cnpj = ?, telefone = ? WHERE id = ?";
 
         try(PreparedStatement stmt = connection.prepareStatement(sql)){
