@@ -2,13 +2,12 @@ package model;
 
 import java.util.Comparator;
 
-public enum Categoria implements Comparator<Categoria>{
-	SEM_CATEGORIA(0, "Sem Categoria"), ALIMENTICIO(1, "Alimentício"), ELETRONICO(2, "Eletrônico"), LIMPEZA(3, "Limpeza"), VESTUARIO(4, "Vestuário");
+public class Categoria implements Comparator<Categoria>{
 
 	private int id;
 	private String nome;
 
-	Categoria(int id, String nome){
+	public Categoria(int id, String nome){
 		this.id = id;
 		this.nome = nome;
 	}
@@ -30,16 +29,11 @@ public enum Categoria implements Comparator<Categoria>{
 	}
 
 	public static void mostrarCategorias() {
-		System.out.println("1 - Alimentício |  2 - Eletrônico | 3 - Limpeza | 4 - Vestuário");
+		System.out.println("1 - Alimentício\n2 - Eletrônico\n3 - Limpeza\n4 - Vestuário");
 	}
 
-	public static Categoria getPorId(int idCategoria) {
-		for(Categoria c: values()) {
-			if(c.getId() == idCategoria) {
-				return c;
-			}
-		}
-		return null; //retorna null se não encontrar categoria válida
+	private int compareTo(Categoria o2) {
+        return Integer.compare(this.getId(), o2.getId());
 	}
 
 	@Override
