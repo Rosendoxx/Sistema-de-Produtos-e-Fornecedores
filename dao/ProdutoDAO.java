@@ -8,7 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ProdutoDAO extends GenericDAO<ProdutoDAO, Produto>{
+public class ProdutoDAO extends GenericDAO<Produto>{
     private final FornecedorDAO FDAO = new FornecedorDAO();
     private final CategoriaDAO CDAO = new CategoriaDAO();
 

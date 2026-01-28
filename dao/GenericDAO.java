@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
-public abstract class GenericDAO <E, T> {
+public abstract class GenericDAO <T> {
     protected Connection connection;
 
     public GenericDAO(){

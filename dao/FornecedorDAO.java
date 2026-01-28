@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class FornecedorDAO extends GenericDAO<FornecedorDAO, Fornecedor> {
+public class FornecedorDAO extends GenericDAO<Fornecedor> {
     @Override
     protected String getInsertSQL() {
         return "INSERT INTO Fornecedor (id, nome, cnpj, telefone) VALUES (?, ?, ?, ?)";

@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class CategoriaDAO extends GenericDAO<CategoriaDAO, Categoria> {
+public class CategoriaDAO extends GenericDAO<Categoria> {
     @Override
     protected String getInsertSQL() {
         return "INSERT INTO Categoria (nome) VALUES(?)";
