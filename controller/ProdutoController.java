@@ -56,6 +56,10 @@ public class ProdutoController {
         return new ArrayList<>(PDAO.buscarTodos());
     }
 
+    public Produto encontrar(int id){
+        return PDAO.buscarPorId(id);
+    }
+
     public void atualizar(int id, int parametro, String valor){
         Produto atualizadoProduto = PDAO.buscarPorId(id);
 

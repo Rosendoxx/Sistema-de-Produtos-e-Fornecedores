@@ -8,16 +8,16 @@ import java.util.List;
 import java.util.Objects;
 
 public class FornecedorController {
-    private FornecedorDAO fdao;
+    private FornecedorDAO FDAO;
 
     public FornecedorController(){
-        this.fdao = new FornecedorDAO();
+        this.FDAO = new FornecedorDAO();
     }
 
     public void cadastrar(String nome, String cnpj, String telefone){
         Fornecedor f = new Fornecedor(0, nome, cnpj, telefone);
         try{
-            fdao.inserir(f);
+            FDAO.inserir(f);
             System.out.println("Fornecedor inserido com sucesso!");
         } catch (RuntimeException e){
             System.out.println("Erro ao inserir usuário "+e+"\nTente novamente!");
@@ -25,11 +25,15 @@ public class FornecedorController {
     }
 
     public List<Fornecedor> listarTodos(){
-        return new ArrayList<>(fdao.buscarTodos());
+        return new ArrayList<>(FDAO.buscarTodos());
+    }
+
+    public Fornecedor encontrar(int id){
+        return FDAO.buscarPorId(id);
     }
 
     public void atualizar(int id, int parametro, String valor){
-        Fornecedor atualizadoFornecedor = fdao.buscarPorId(id);
+        Fornecedor atualizadoFornecedor = FDAO.buscarPorId(id);
 
         if(Objects.isNull(atualizadoFornecedor)){
             System.out.println("Fornecedor não encontrado");
@@ -52,7 +56,7 @@ public class FornecedorController {
         }
 
         try{
-            fdao.atualizar(atualizadoFornecedor);
+            FDAO.atualizar(atualizadoFornecedor);
             System.out.println("Fornecedor atualizado com sucesso");
         } catch(RuntimeException e){
             System.out.println("Erro ao atualizar o fornecedor. "+e);
@@ -61,7 +65,7 @@ public class FornecedorController {
 
     public void excluir(int id){
         try{
-            fdao.excluir(id);
+            FDAO.excluir(id);
             System.out.println("Fornecedor excluido com sucesso!");
         } catch(RuntimeException e){
             System.out.println("Erro ao excluir fornecedor "+e);

@@ -31,6 +31,10 @@ public class CategoriaController {
         return new ArrayList<>(CDAO.buscarTodos());
     }
 
+    public Categoria encontrar(int id){
+        return CDAO.buscarPorId(id);
+    }
+
     public void atualizar(int id, String valor){
         Categoria atualizadaCategoria = CDAO.buscarPorId(id);
 
