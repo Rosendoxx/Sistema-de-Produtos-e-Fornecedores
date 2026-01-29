@@ -3,6 +3,9 @@ view;
 
 import java.util.*;
 
+import controller.CategoriaController;
+import controller.FornecedorController;
+import controller.ProdutoController;
 import dao.CategoriaDAO;
 import dao.FornecedorDAO;
 import dao.ProdutoDAO;
@@ -15,66 +18,33 @@ public class Main {
 	private static Map<Integer, Fornecedor> fornecedores = new HashMap<Integer, Fornecedor>();
 	private static final ProdutoDAO PDAO = new ProdutoDAO();
 	private static final FornecedorDAO FDAO = new FornecedorDAO();
-	private static CategoriaDAO cdao = new CategoriaDAO();
+	private static CategoriaDAO CDAO = new CategoriaDAO();
+	private static ProdutoController pControl = new ProdutoController();
+	private static FornecedorController fControl = new FornecedorController();
+	private static CategoriaController cControl = new CategoriaController();
 	private static int indexProduto = 0;
 	private static int indexFornecedor = 0;
 	private static final Scanner IN = new Scanner(System.in);
 	
 	public static void main(String[] args) {
-		produtos = PDAO.buscarTodos();
-		fornecedores = FDAO.buscarTodos();
 		int opcao = 0;
 		while(opcao!=9) {
 			menu();
 			opcao = lerInt();
 			switch (opcao) {
 			case 1:
-				System.out.println("==== CRIANDO PRODUTO ====");
-				Produto p = null;
-				while(Objects.isNull(p)){
-					p = criarProduto();
-					if(Objects.isNull(p)) System.out.println("Erro ao criar fornecedor\nTente novamente: ");
-				}
-				produtos.put(indexProduto, p);
-				PDAO.inserir(p);
-				indexProduto++;
+				criar();
 				break;
 			case 2:
-				System.out.println("==== CRIANDO FORNECEDOR ====");
-				Fornecedor f = null;
-				while(Objects.isNull(f)){
-					f = criarFornecedor();
-					if(Objects.isNull(f)) System.out.println("Erro ao criar fornecedor\nTente novamente: ");
-				}
-				fornecedores.put(indexFornecedor, f);
-				FDAO.inserir(f);
-				indexFornecedor++;
+				listar();
 				break;
 			case 3:
-				System.out.println("==== LISTANDO PRODUTOS ====");
-				listarProdutos();
+				alterar();
 				break;
 			case 4:
-				System.out.println("==== LISTANDO FORNECEDORES ====");
-				listarFornecedores();
+				excluir();
 				break;
 			case 5:
-				System.out.println("==== ALTERANDO PRODUTO ====");
-				alterarProduto(encontrarProduto(lerInt()));
-				break;
-			case 6:
-				System.out.println("==== ALTERANDO FORNECEDOR ====");
-				alterarFornecedor(encontrarFornecedor(lerInt()));
-				break;
-			case 7:
-				System.out.println("==== EXCLUINDO PRODUTO ====");
-				excluirProduto(encontrarProduto(lerInt()));
-				break;
-			case 8:
-				System.out.println("==== EXCLUINDO FORNECEDOR ====");
-				excluirFornecedor(encontrarFornecedor(lerInt()));
-				break;
-			case 9:
 				System.out.println("Saindo...");
 				break;
 			default:
@@ -83,55 +53,83 @@ public class Main {
 			}
 		}
 	}
-	
+
 	private static void menu() {
-		System.out.println("1 - Adicionar Produto");
-		System.out.println("2 - Adicionar Fornecedor");
-		System.out.println("3 - Listar Produto");
-		System.out.println("4 - Listar Fornecedor");
-		System.out.println("5 - Alterar Produto");
-		System.out.println("6 - Alterar Fornecedor");
-		System.out.println("7 - Excluir Produto");
-		System.out.println("8 - Excluir Fornecedor");
-		System.out.println("9 - Sair");
+		System.out.println("1 - Criar");
+		System.out.println("2 - Listar");
+		System.out.println("3 - Alterar");
+		System.out.println("4 - Excluir");
+		System.out.println("5 - Sair");
 		System.out.println("Escolha: ");
 	}
-	
-	private static Produto criarProduto() {
+
+	private static void criar() {
+		int escolha = 0;
+		while (escolha<1 || escolha>3){
+			System.out.println("1 - Criar Produto");
+			System.out.println("2 - Criar Fornecedor");
+			System.out.println("3 - Criar Categoria");
+			System.out.println("Escolha: ");
+			escolha = lerInt();
+			if (escolha<1 || escolha>3) {
+				System.out.println("Opção inválida\nTente novamente: ");
+			}
+		}
+		switch (escolha){
+			case 1:
+				criarProduto();
+				break;
+			case 2:
+				criarFornecedor();
+				break;
+			case 3:
+				criarCategoria();
+				break;
+			default:
+				System.out.println("Opção inválida\nNão foi possível criar");
+				break;
+		}
+	}
+
+	private static void criarProduto() {
 		String nome;
 		double preco;
-		Fornecedor fornecedor;
-		Categoria categoria;
-		
+		int idFornecedor, idCategoria;
+
 		System.out.println("Digite o nome do produto: ");
 		nome = IN.nextLine();
 		System.out.println("Digite o preço do produto: ");
 		preco = lerDouble();
 		System.out.println("Digite o id do fornecedor do produto: ");
-		fornecedor = encontrarFornecedor(lerInt());
+		idFornecedor = lerInt();
 		System.out.println("Digite o número da categoria desse produto: ");
 		Categoria.mostrarCategorias();
-		categoria = Categoria.getPorId(lerInt());
-		while(categoria == null) {
-			System.out.println("Categoria inválida\nTente novamente");
-			categoria = Categoria.getPorId(lerInt());
-		}
-		return new Produto(indexProduto, nome, preco, fornecedor, categoria);
+		idCategoria = lerInt();
+		pControl.cadastrar(nome, preco, idFornecedor, idCategoria);
 	}
-	
-	private static Fornecedor criarFornecedor() {
+
+	private static void criarFornecedor() {
 		String nome, cnpj, telefone;
-		
+
 		System.out.println("Digite o nome do fornecedor:");
 		nome = IN.nextLine();
 		System.out.println("Digite o CNPJ do fornecedor: ");
 		cnpj = IN.nextLine();
 		System.out.println("Digite o telefone do fornecedor: ");
 		telefone = IN.nextLine();
-		
-		return new Fornecedor(indexFornecedor, nome, cnpj, telefone);
+
+		fControl.cadastrar(nome, cnpj, telefone);
 	}
-	
+
+	private static void criarCategoria() {
+		String nome;
+
+		System.out.println("Digite o nome da categoria: ");
+		nome = IN.nextLine();
+
+		cControl.cadastrar(nome);
+	}
+
 	private static Produto encontrarProduto(int idProduto) {
 		while(true) {
 			if (produtos.get(idProduto) != null) {
