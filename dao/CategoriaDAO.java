@@ -29,7 +29,6 @@ public class CategoriaDAO extends GenericDAO<Categoria> {
 
     @Override
     protected void setInsertParametros(PreparedStatement stmt, Categoria entidadeOrigem) throws SQLException {
-        stmt.setInt(1, entidadeOrigem.getId());
         stmt.setString(1, entidadeOrigem.getNome());
     }
 

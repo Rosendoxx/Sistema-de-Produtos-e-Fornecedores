@@ -9,7 +9,7 @@ import java.sql.SQLException;
 public class FornecedorDAO extends GenericDAO<Fornecedor> {
     @Override
     protected String getInsertSQL() {
-        return "INSERT INTO Fornecedor (id, nome, cnpj, telefone) VALUES (?, ?, ?, ?)";
+        return "INSERT INTO Fornecedor (nome, cnpj, telefone) VALUES (?, ?, ?)";
     }
 
     @Override
@@ -29,10 +29,9 @@ public class FornecedorDAO extends GenericDAO<Fornecedor> {
 
     @Override
     protected void setInsertParametros(PreparedStatement stmt, Fornecedor f) throws SQLException {
-        stmt.setInt(1, f.getIdFornecedor());
-        stmt.setString(2, f.getNome());
-        stmt.setString(3, f.getCnpj());
-        stmt.setString(4, f.getTelefone());
+        stmt.setString(1, f.getNome());
+        stmt.setString(2, f.getCnpj());
+        stmt.setString(3, f.getTelefone());
     }
 
     @Override

@@ -14,13 +14,8 @@ public class FornecedorController {
         this.fdao = new FornecedorDAO();
     }
 
-    public void cadastrar(int id, String nome, String cnpj, String telefone){
-        Fornecedor f = fdao.buscarPorId(id);
-        if(!Objects.isNull(f)){
-            System.out.println("Erro: esse funcionário já existe no banco de dados!");
-            return;
-        }
-        f = new Fornecedor(id, nome, cnpj, telefone);
+    public void cadastrar(String nome, String cnpj, String telefone){
+        Fornecedor f = new Fornecedor(0, nome, cnpj, telefone);
         try{
             fdao.inserir(f);
             System.out.println("Fornecedor inserido com sucesso!");

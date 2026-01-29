@@ -14,17 +14,13 @@ public class CategoriaController {
         this.CDAO = new CategoriaDAO();
     }
 
-    public void cadastrar(int id, String nome){
-        if(!Objects.isNull(CDAO.buscarPorId(id))){
-            System.out.println("Essa categoria já existe\nNão é possível cadastrar");
-            return;
-        }
+    public void cadastrar(String nome){
         if(CDAO.buscarTodos().stream().filter(c -> c.getNome().equalsIgnoreCase(nome)).isParallel()){
             System.out.println("Já existe uma categoria com esse nome\nNão é possível cadastrar");
             return;
         }
         try{
-            CDAO.inserir(new Categoria(id, nome)); //Observar abstração do ENUM
+            CDAO.inserir(new Categoria(0, nome));
             System.out.println("Categoria adcionada com sucesso");
         } catch (RuntimeException e){
             System.out.println("Erro ao inserir categoria "+ e);
