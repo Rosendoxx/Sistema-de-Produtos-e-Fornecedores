@@ -28,10 +28,6 @@ public class Categoria implements Comparator<Categoria>{
 		this.nome = nome;
 	}
 
-	public static void mostrarCategorias() {
-		System.out.println("1 - Alimentício\n2 - Eletrônico\n3 - Limpeza\n4 - Vestuário");
-	}
-
 	private int compareTo(Categoria o2) {
         return Integer.compare(this.getId(), o2.getId());
 	}
