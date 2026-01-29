@@ -38,7 +38,7 @@ public class Categoria implements Comparator<Categoria>{
 
 	@Override
 	public String toString(){
-		return getNome();
+		return getId()+getNome();
 	}
 
 	@Override
