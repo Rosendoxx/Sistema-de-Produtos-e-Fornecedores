@@ -103,7 +103,7 @@ public class Main {
 		System.out.println("Digite o id do fornecedor do produto: ");
 		idFornecedor = lerInt();
 		System.out.println("Digite o número da categoria desse produto: ");
-		Categoria.mostrarCategorias();
+		cControl.listarTodos().stream().sorted().forEach(c -> System.out.println(c));
 		idCategoria = lerInt();
 		pControl.cadastrar(nome, preco, idFornecedor, idCategoria);
 	}
@@ -130,69 +130,34 @@ public class Main {
 		cControl.cadastrar(nome);
 	}
 
-	private static Produto encontrarProduto(int idProduto) {
-		while(true) {
-			if (produtos.get(idProduto) != null) {
-				return produtos.get(idProduto);
+	private static void listar() {
+		int escolha = 0;
+		while (escolha<1 || escolha>3){
+			System.out.println("1 - Listar Produto");
+			System.out.println("2 - Listar Fornecedor");
+			System.out.println("3 - Listar Categoria");
+			System.out.println("Escolha: ");
+			escolha = lerInt();
+			if (escolha<1 || escolha>3) {
+				System.out.println("Opção inválida\nTente novamente: ");
 			}
-			
-			System.out.println("Produto não encontrado! \nEsse produto já está cadastrado? (1 - sim, 2 - não");
-			int opcao = lerInt();
-			switch(opcao) {
+		}
+		switch (escolha){
 			case 1:
-				System.out.println("Digite o ID novamente: ");
-				idProduto = lerInt();
+				listarProdutos();
 				break;
 			case 2:
-				System.out.println("Cadastrando novo produto: ");
-				produtos.put(indexProduto + 1, criarProduto());
-				indexProduto++;
-				return produtos.get(indexProduto);
-			default:
-				System.out.println("Opção inválida, digite novamente:");
+				listarFornecedores();
 				break;
-			}
+			case 3:
+				listarCategorias();
+				break;
+			default:
+				System.out.println("Opção inválida\nNão foi possível listar");
+				break;
 		}
 	}
-	
-	private static Fornecedor encontrarFornecedor(int idFornecedor) {
-		while(true) {
-			if (fornecedores.get(idFornecedor) != null) {
-				return fornecedores.get(idFornecedor);
-			}
-				
-			System.out.println("Fornecedor não encontrado! \nEsse fornecedor já está cadastrado? (1 - sim, 2 - não");
-			int opcao = lerInt();
-			switch(opcao) {
-				case 1:
-					System.out.println("Digite o ID novamente: ");
-					idFornecedor = lerInt();
-					break;
-				case 2:
-					System.out.println("Cadastrando novo fornecedor: ");
-					fornecedores.put(indexFornecedor + 1, criarFornecedor());
-					indexFornecedor++;
-					return fornecedores.get(indexFornecedor);
-				default:
-					System.out.println("Opção inválida, digite novamente:");
-					break;
-			}
-		}
-	}
-	
-	private static void excluirProduto(Produto produto) {
-		produto.setAtivo(false);
-		System.out.println("Produto excluido");
-	}
-	private static void excluirFornecedor(Fornecedor fornecedor) {
-		fornecedor.setAtivo(false);
-		produtos.entrySet()
-		.stream()
-		.filter(produto -> produto.getValue().getFornecedor().equals(fornecedor))
-		.forEach(produto -> produto.getValue().setAtivo(false));
-		System.out.println("Fornecedor excluido");
-	}
-	
+
 	private static void listarProdutos() {
 		while(true) {
 			System.out.println("1 - Por preço");
@@ -201,92 +166,184 @@ public class Main {
 			System.out.println("4 - Por categoria");
 			System.out.println("Escolha: ");
 			switch (lerInt()) {
-			case 1:
-				produtosPorPreco();
-				return;
-			case 2:
-				produtosPorNome();
-				return;
-			case 3:
-				produtosPorFornecedor(encontrarFornecedor(lerInt()));
-				return;
-			case 4:
-				produtosPorCategoria();
-				return;
-			default:
-				System.out.println("Opção inválida \nEscolha uma das opções: ");
-				break;
+				case 1:
+					produtosPorPreco();
+					return;
+				case 2:
+					produtosPorNome();
+					return;
+				case 3:
+					produtosPorFornecedor();
+					return;
+				case 4:
+					produtosPorCategoria();
+					return;
+				default:
+					System.out.println("Opção inválida \nEscolha uma das opções: ");
+					break;
 			}
 		}
 	}
-	
+
 	private static void listarFornecedores() {
 		while(true) {
-			System.out.println("1 - Por nome");
-			System.out.println("2 - Por ID");
+			System.out.println("1 - Por ID");
+			System.out.println("2 - Por nome");
 			System.out.println("Escolha: ");
 			switch (lerInt()) {
-			case 1:
-				fornecedoresPorNome();
-				return;
-			case 2:
-				fornecedoresPorId();
-				return;
-			default:
-				System.out.println("Opção inválida\nEscolha uma das opções: ");
-				break;
+				case 1:
+					fornecedoresPorId();
+					return;
+				case 2:
+					fornecedoresPorNome();
+					return;
+				default:
+					System.out.println("Opção inválida\nEscolha uma das opções: ");
+					break;
 			}
 		}
 	}
-	
+
+	private static void listarCategorias() {
+		System.out.println("Mostrando categorias: ");
+		cControl.listarTodos()
+				.stream()
+				.sorted()
+				.forEach(c -> System.out.println(c));
+	}
+
+	private static void produtosPorPreco() {
+		System.out.println("Mostrando produtos por preço: ");
+		pControl.listarTodos()
+				.stream().
+				sorted((p1, p2) -> Double.compare(p1.getPreco(), p2.getPreco()))
+				.forEach(p -> System.out.println(p));
+	}
+
+	private static void produtosPorNome() {
+		System.out.println("Mostrando produtos por nome: ");
+		pControl.listarTodos()
+				.stream().
+				sorted((p1, p2) -> p1.getNome().compareTo(p2.getNome()))
+				.forEach(p -> System.out.println(p));
+	}
+
+	private static void produtosPorFornecedor() {
+		System.out.println("Digite o id do Fornecedor a ser mostrada: ");
+		int idFornecedor = lerInt();
+
+		if(Objects.isNull(fControl.encontrar(idFornecedor))){
+			System.out.println("Fornecedor não encontrada");
+			return;
+		}
+
+		System.out.println("Mostrando produtos por fornecedor: ");
+		pControl.listarTodos()
+				.stream()
+				.filter(p -> p.getFornecedor().getIdFornecedor()==idFornecedor)
+				.forEach(p -> System.out.println(p));
+	}
+
+	private static void produtosPorCategoria() {
+		cControl.listarTodos()
+				.stream()
+				.sorted()
+				.forEach(c -> System.out.println(c));
+		System.out.println("Digite o id da categoria a ser mostrada: ");
+		int idCategoria = lerInt();
+
+		if(Objects.isNull(cControl.encontrar(idCategoria))){
+			System.out.println("Categoria não encontrada");
+			return;
+		}
+
+		System.out.println("Mostrando produtos por categoria: ");
+		pControl.listarTodos()
+				.stream()
+				.filter(p -> p.getCategoria().getId()==idCategoria)
+				.forEach(p -> System.out.println(p));
+	}
+
 	private static void fornecedoresPorId() {
 		System.out.println("Mostrando fornecedores por ID: ");
-		fornecedores.entrySet()
-		.stream()
-		.sorted((f1, f2) -> Integer.compare(f1.getValue().getIdFornecedor(), f2.getValue().getIdFornecedor()))
-		.forEach(fornecedor -> System.out.println(fornecedor.getValue()));
+		fControl.listarTodos()
+				.stream()
+				.sorted((f1, f2) -> Integer.compare(f1.getIdFornecedor(), f2.getIdFornecedor()))
+				.forEach(f -> System.out.println(f));
 	}
 
 	private static void fornecedoresPorNome() {
 		System.out.println("Mostrando fornecedores por nome: ");
-		fornecedores.entrySet()
-		.stream()
-		.sorted((f1, f2) -> f1.getValue().getNome().compareToIgnoreCase(f2.getValue().getNome()))
-		.forEach(fornecedor -> System.out.println(fornecedor));
+		fControl.listarTodos()
+				.stream()
+				.sorted((f1, f2) -> f1.getNome().compareTo(f2.getNome()))
+				.forEach(f -> System.out.println(f));
 	}
 
-	private static void produtosPorNome() {
-		System.out.println("Mostrando produtos por nome: "); 
-		produtos.entrySet()
-		 .stream()
-		 .sorted((p1, p2) -> p1.getValue().getNome().compareToIgnoreCase(p2.getValue().getNome()))
-		 .forEach(produto -> System.out.println(produto.getValue()));
+//	private static Produto encontrarProduto(int idProduto) {
+//		while(true) {
+//			if (produtos.get(idProduto) != null) {
+//				return produtos.get(idProduto);
+//			}
+//
+//			System.out.println("Produto não encontrado! \nEsse produto já está cadastrado? (1 - sim, 2 - não");
+//			int opcao = lerInt();
+//			switch(opcao) {
+//			case 1:
+//				System.out.println("Digite o ID novamente: ");
+//				idProduto = lerInt();
+//				break;
+//			case 2:
+//				System.out.println("Cadastrando novo produto: ");
+//				produtos.put(indexProduto + 1, criarProduto());
+//				indexProduto++;
+//				return produtos.get(indexProduto);
+//			default:
+//				System.out.println("Opção inválida, digite novamente:");
+//				break;
+//			}
+//		}
+//	}
+//	private static Fornecedor encontrarFornecedor(int idFornecedor) {
+//		while(true) {
+//			if (fornecedores.get(idFornecedor) != null) {
+//				return fornecedores.get(idFornecedor);
+//			}
+//
+//			System.out.println("Fornecedor não encontrado! \nEsse fornecedor já está cadastrado? (1 - sim, 2 - não");
+//			int opcao = lerInt();
+//			switch(opcao) {
+//				case 1:
+//					System.out.println("Digite o ID novamente: ");
+//					idFornecedor = lerInt();
+//					break;
+//				case 2:
+//					System.out.println("Cadastrando novo fornecedor: ");
+//					fornecedores.put(indexFornecedor + 1, criarFornecedor());
+//					indexFornecedor++;
+//					return fornecedores.get(indexFornecedor);
+//				default:
+//					System.out.println("Opção inválida, digite novamente:");
+//					break;
+//			}
+//		}
+
+//	}
+
+	private static void excluirProduto(Produto produto) {
+		produto.setAtivo(false);
+		System.out.println("Produto excluido");
 	}
-	
-	private static void produtosPorPreco() {
-		System.out.println("Mostrando produtos por preço: "); 
-		produtos.entrySet()
-		.stream()
-		.sorted((p1, p2) -> Double.compare(p1.getValue().getPreco(), p2.getValue().getPreco()))
-		.forEach(produto -> System.out.println(produto.getValue()));
-	}
-	
-	private static void produtosPorCategoria() {
-		System.out.println("Mostrando produtos por categoria: "); 
-		produtos.entrySet()
-		.stream()
-		.sorted((p1, p2) -> p1.getValue().getCategoria().compareTo(p2.getValue().getCategoria()))
-		.forEach(produto -> System.out.println(produto.getValue()));
-	}
-	
-	private static void produtosPorFornecedor(Fornecedor fornecedor) {
-		System.out.println("Mostrando produtos por fornecedor: "); 
+
+	private static void excluirFornecedor(Fornecedor fornecedor) {
+		fornecedor.setAtivo(false);
 		produtos.entrySet()
 		.stream()
 		.filter(produto -> produto.getValue().getFornecedor().equals(fornecedor))
-		.forEach(produto -> System.out.println(produto.getValue()));
+		.forEach(produto -> produto.getValue().setAtivo(false));
+		System.out.println("Fornecedor excluido");
 	}
-	
+
 	private static void alterarProduto(Produto produto) {
 		while(true) {
 			System.out.println("1 - Alterar Nome");
