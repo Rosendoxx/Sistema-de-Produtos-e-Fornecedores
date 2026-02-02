@@ -67,6 +67,8 @@ public class Main {
 		}
 		switch (escolha){
 			case 1:
+				if (isFornecedorEmpity()) return;
+				else if(isCategoriaEmpity()) return;
 				criarProduto();
 				break;
 			case 2:
@@ -95,12 +97,15 @@ public class Main {
 		}
 		switch (escolha){
 			case 1:
+				if(isProdutoEmpity()) return;
 				listarProdutos();
 				break;
 			case 2:
+				if(isFornecedorEmpity()) return;
 				listarFornecedores();
 				break;
 			case 3:
+				if(isCategoriaEmpity()) return;
 				listarCategorias();
 				break;
 			default:
@@ -122,6 +127,7 @@ public class Main {
 			}
 			switch(escolha){
 				case 1:
+					if(isProdutoEmpity()) return;
 					System.out.println("Digite o ID do produto: ");
 					int idProdutoAlterado = lerInt();
 					Produto produtoAlterado = PCONTROL.encontrar(idProdutoAlterado);
@@ -132,6 +138,7 @@ public class Main {
 					alterarProduto(produtoAlterado);
 					break;
 				case 2:
+					if(isFornecedorEmpity()) return;
 					System.out.println("Digite o ID do fornecedor: ");
 					int idFornecedorAlterado = lerInt();
 					Fornecedor fornecedorAlterado = FCONTROL.encontrar(idFornecedorAlterado);
@@ -142,6 +149,7 @@ public class Main {
 					alterarFornecedor(fornecedorAlterado);
 					break;
 				case 3:
+					if(isCategoriaEmpity()) return;
 					System.out.println("Digite o ID da categoria: ");
 					int idCategoriaAlterado = lerInt();
 					Categoria categoriaAlterada = CCONTROL.encontrar(idCategoriaAlterado);
@@ -172,6 +180,7 @@ public class Main {
 		}
 		switch (escolha){
 			case 1:
+				if(isProdutoEmpity()) return;
 				System.out.println("Digite o ID do produto a ser excluído: ");
 				Produto produtoExcluido = PCONTROL.encontrar(lerInt());
 				if(Objects.isNull(produtoExcluido)){
@@ -181,6 +190,7 @@ public class Main {
 				PCONTROL.excluir(produtoExcluido.getId());
 				break;
 			case 2:
+				if(isFornecedorEmpity()) return;
 				System.out.println("Digite o ID do fornecedor a ser excluído: ");
 				Fornecedor fornecedorExcluido = FCONTROL.encontrar(lerInt());
 				if(Objects.isNull(fornecedorExcluido)){
@@ -190,6 +200,7 @@ public class Main {
 				FCONTROL.excluir(fornecedorExcluido.getIdFornecedor());
 				break;
 			case 3:
+				if(isCategoriaEmpity()) return;
 				System.out.println("Digite o ID da categoria a ser excluído: ");
 				Categoria categoriaExcluida = CCONTROL.encontrar(lerInt());
 				if(Objects.isNull(categoriaExcluida)){
@@ -443,6 +454,30 @@ public class Main {
 		} else if(obj instanceof Categoria){
 			CCONTROL.atualizar(((Categoria) obj).getId(), IN.nextLine());
 		}
+	}
+
+	public static boolean isProdutoEmpity(){
+		if(PCONTROL.listarTodos().isEmpty()){
+			System.out.println("Nenhum produto cadastrado\nCadastre ao menos um antes dessa operação");
+			return true;
+		}
+		return false;
+	}
+
+	public static boolean isFornecedorEmpity(){
+		if(FCONTROL.listarTodos().isEmpty()){
+			System.out.println("Nenhum fornecedor cadastrado\nCadastre ao menos um antes dessa operação");
+			return true;
+		}
+		return false;
+	}
+
+	public static boolean isCategoriaEmpity(){
+		if(CCONTROL.listarTodos().isEmpty()){
+			System.out.println("Nenhuma categoria cadastrada\nCadastre ao menos uma antes dessa operação");
+			return true;
+		}
+		return false;
 	}
 
 	public static int lerInt() {
