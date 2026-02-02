@@ -158,6 +158,52 @@ public class Main {
 		}
 	}
 
+	private static void excluir() {
+		int escolha = 0;
+		while (escolha<1 || escolha>3){
+			System.out.println("1 - Listar Produto");
+			System.out.println("2 - Listar Fornecedor");
+			System.out.println("3 - Listar Categoria");
+			System.out.println("Escolha: ");
+			escolha = lerInt();
+			if (escolha<1 || escolha>3) {
+				System.out.println("Opção inválida\nTente novamente: ");
+			}
+		}
+		switch (escolha){
+			case 1:
+				System.out.println("Digite o ID do produto a ser excluído: ");
+				Produto produtoExcluido = PCONTROL.encontrar(lerInt());
+				if(Objects.isNull(produtoExcluido)){
+					System.out.println("Produto não encontrado\nNão é possível excluir");
+					return;
+				}
+				PCONTROL.excluir(produtoExcluido.getId());
+				break;
+			case 2:
+				System.out.println("Digite o ID do fornecedor a ser excluído: ");
+				Fornecedor fornecedorExcluido = FCONTROL.encontrar(lerInt());
+				if(Objects.isNull(fornecedorExcluido)){
+					System.out.println("Fornecedor não encontrado\nNão é possível excluir");
+					return;
+				}
+				FCONTROL.excluir(fornecedorExcluido.getIdFornecedor());
+				break;
+			case 3:
+				System.out.println("Digite o ID da categoria a ser excluído: ");
+				Categoria categoriaExcluida = CCONTROL.encontrar(lerInt());
+				if(Objects.isNull(categoriaExcluida)){
+					System.out.println("Categoria não encontrado\nNão é possível excluir");
+					return;
+				}
+				CCONTROL.excluir(categoriaExcluida.getId());
+				break;
+			default:
+				System.out.println("Opção inválida\nNão foi possível excluir");
+				break;
+		}
+	}
+
 	private static void criarProduto() {
 		String nome;
 		double preco;
@@ -395,22 +441,8 @@ public class Main {
 		} else if(obj instanceof Fornecedor) {
 			FCONTROL.atualizar(((Fornecedor) obj).getIdFornecedor(), 1, IN.nextLine());
 		} else if(obj instanceof Categoria){
-			CCONTROL.atualizar(((Categoria) obj).getId(), 1, IN.nextLine());
+			CCONTROL.atualizar(((Categoria) obj).getId(), IN.nextLine());
 		}
-	}
-
-	private static void excluirProduto(Produto produto) {
-		produto.setAtivo(false);
-		System.out.println("Produto excluido");
-	}
-
-	private static void excluirFornecedor(Fornecedor fornecedor) {
-		fornecedor.setAtivo(false);
-		produtos.entrySet()
-		.stream()
-		.filter(produto -> produto.getValue().getFornecedor().equals(fornecedor))
-		.forEach(produto -> produto.getValue().setAtivo(false));
-		System.out.println("Fornecedor excluido");
 	}
 
 	public static int lerInt() {
