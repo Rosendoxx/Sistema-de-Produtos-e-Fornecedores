@@ -187,7 +187,7 @@ public class Main {
 					System.out.println("Produto não encontrado\nNão é possível excluir");
 					return;
 				}
-				PCONTROL.excluir(produtoExcluido.getId());
+				System.out.println(PCONTROL.excluir(produtoExcluido.getId()));
 				break;
 			case 2:
 				if(isFornecedorEmpity()) return;
@@ -197,7 +197,7 @@ public class Main {
 					System.out.println("Fornecedor não encontrado\nNão é possível excluir");
 					return;
 				}
-				FCONTROL.excluir(fornecedorExcluido.getIdFornecedor());
+				System.out.println(FCONTROL.excluir(fornecedorExcluido.getIdFornecedor()));
 				break;
 			case 3:
 				if(isCategoriaEmpity()) return;
@@ -207,7 +207,7 @@ public class Main {
 					System.out.println("Categoria não encontrado\nNão é possível excluir");
 					return;
 				}
-				CCONTROL.excluir(categoriaExcluida.getId());
+				System.out.println(CCONTROL.excluir(categoriaExcluida.getId()));
 				break;
 			default:
 				System.out.println("Opção inválida\nNão foi possível excluir");
@@ -229,7 +229,7 @@ public class Main {
 		System.out.println("Digite o número da categoria desse produto: ");
 		CCONTROL.listarTodos().stream().sorted().forEach(c -> System.out.println(c));
 		idCategoria = lerInt();
-		PCONTROL.cadastrar(nome, preco, idFornecedor, idCategoria);
+		System.out.println(PCONTROL.cadastrar(nome, preco, idFornecedor, idCategoria));
 	}
 
 	private static void criarFornecedor() {
@@ -242,7 +242,7 @@ public class Main {
 		System.out.println("Digite o telefone do fornecedor: ");
 		telefone = IN.nextLine();
 
-		FCONTROL.cadastrar(nome, cnpj, telefone);
+		System.out.println(FCONTROL.cadastrar(nome, cnpj, telefone));
 	}
 
 	private static void criarCategoria() {
@@ -251,7 +251,7 @@ public class Main {
 		System.out.println("Digite o nome da categoria: ");
 		nome = IN.nextLine();
 
-		CCONTROL.cadastrar(nome);
+		System.out.println(CCONTROL.cadastrar(nome));
 	}
 
 	private static void listarProdutos() {
@@ -385,11 +385,11 @@ public class Main {
 		switch(lerInt()) {
 			case 1:
 				System.out.println("Digite o novo nome do produto: ");
-				alterarNome(produto);
+				System.out.println(PCONTROL.atualizarNome(produto.getId(), IN.nextLine()));
 				break;
 			case 2:
 				System.out.println("Digite o novo preço do produto: ");
-				PCONTROL.atualizar(produto.getId(), 2, String.valueOf(lerDouble()));
+				System.out.println(PCONTROL.atualizarPreco(produto.getId(), lerDouble()));
 				break;
 			case 3:
 				System.out.println("Digite o novo ID do fornecedor do produto: ");
@@ -398,7 +398,7 @@ public class Main {
 					System.out.println("Fornecedor não encontrado\nNão é possível alterar");
 					return;
 				}
-				PCONTROL.atualizar(produto.getId(), 3, String.valueOf(f.getIdFornecedor()));
+				System.out.println(PCONTROL.atualizarFornecedor(produto.getId(), f.getIdFornecedor()));
 				break;
 			case 4:
 				System.out.println("Digite o novo ID da categoria do produto: ");
@@ -407,7 +407,7 @@ public class Main {
 					System.out.println("Categoria não encontrada\nNão é possível alterar");
 					return;
 				}
-				PCONTROL.atualizar(produto.getId(), 4, String.valueOf(c.getId()));
+				System.out.println(PCONTROL.atualizarCategoria(produto.getId(), c.getId()));
 				break;
 			default:
 				System.out.println("Opção inválida\nTente novamente ");
@@ -424,15 +424,15 @@ public class Main {
 		switch(lerInt()) {
 			case 1:
 				System.out.println("Digite o novo nome do fornecedor: ");
-				alterarNome(fornecedor);
+				System.out.println(FCONTROL.atualizarNome(fornecedor.getIdFornecedor(), IN.nextLine()));
 				break;
 			case 2:
 				System.out.println("Digite o novo CNPJ do fornecedor: ");
-				FCONTROL.atualizar(fornecedor.getIdFornecedor(), 2, IN.nextLine());
+				System.out.println(FCONTROL.atualizarCnpj(fornecedor.getIdFornecedor(), IN.nextLine()));
 				break;
 			case 3:
 				System.out.println("Digite o novo telefone do fornecedor: ");
-				FCONTROL.atualizar(fornecedor.getIdFornecedor(), 3, IN.nextLine());
+				System.out.println(FCONTROL.atualizarTelefone(fornecedor.getIdFornecedor(), IN.nextLine()));
 				break;
 			default:
 				System.out.println("Opção inválida\nTente novamente ");
@@ -443,17 +443,7 @@ public class Main {
 
 	private static void alterarCategoria(Categoria categoria){
 		System.out.println("Digite o novo nome da categoria: ");
-		alterarNome(categoria); //Única alteração possível para essa classe
-	}
-
-	private static void alterarNome(Object obj) {
-		if(obj instanceof Produto) {
-			PCONTROL.atualizar(((Produto) obj).getId(), 1, IN.nextLine());
-		} else if(obj instanceof Fornecedor) {
-			FCONTROL.atualizar(((Fornecedor) obj).getIdFornecedor(), 1, IN.nextLine());
-		} else if(obj instanceof Categoria){
-			CCONTROL.atualizar(((Categoria) obj).getId(), IN.nextLine());
-		}
+		System.out.println(CCONTROL.atualizarNome(categoria.getId(), IN.nextLine()));
 	}
 
 	public static boolean isProdutoEmpity(){

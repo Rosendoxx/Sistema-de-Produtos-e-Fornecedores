@@ -22,33 +22,21 @@ public class ProdutoController {
         this.CDAO = new CategoriaDAO();
     }
 
-    public void cadastrar(String nome, double preco, int idFornecedor, int idCategoria){
-        if(nome == null || nome.isEmpty()){
-            System.out.println("Erro: o nome do produto é obrigatório\nNão é possivel cadastrar");
-            return;
-        }
-        if(preco < 0){
-            System.out.println("Erro: o preço não pode ser negativo\nNão é possível cadastrar");
-            return;
-        }
+    public String cadastrar(String nome, double preco, int idFornecedor, int idCategoria){
+        if(nome == null || nome.isEmpty()) return "Erro: o nome do produto é obrigatório\nNão é possivel cadastrar";
+        if(preco < 0) return "Erro: o preço não pode ser negativo\nNão é possível cadastrar";
         Fornecedor fornecedor = FDAO.buscarPorId(idFornecedor);
-        if (Objects.isNull(fornecedor)){
-            System.out.println("Erro: fornecedor não encontrado\nNão é possível cadastrar");
-            return;
-        }
+        if (Objects.isNull(fornecedor)) return "Erro: fornecedor não encontrado\nNão é possível cadastrar";
         Categoria categoria = CDAO.buscarPorId(idCategoria);
-        if (Objects.isNull(categoria)) {
-            System.out.println("Erro: categoria não encontrada\nNão é possível cadastrar");
-            return;
-        }
+        if (Objects.isNull(categoria)) return "Erro: categoria não encontrada\nNão é possível cadastrar";
 
         Produto novoProduto = new Produto(0, nome, preco, fornecedor, categoria);
 
         try{
             PDAO.inserir(novoProduto);
-            System.out.println("Produto cadastrado com sucesso!");
+            return "Produto cadastrado com sucesso!";
         } catch(RuntimeException e){
-            System.out.println("Erro ao salvar produto no banco de dados "+e);
+            return "Erro ao salvar produto no banco de dados "+e;
         }
     }
 
@@ -60,46 +48,76 @@ public class ProdutoController {
         return PDAO.buscarPorId(id);
     }
 
-    public void atualizar(int id, int parametro, String valor){
+    public String atualizarNome(int id, String valor){
         Produto atualizadoProduto = PDAO.buscarPorId(id);
 
-        if(Objects.isNull(atualizadoProduto)){
-            System.out.println("Produto não encontrado");
-            return;
-        }
+        if(Objects.isNull(atualizadoProduto)) return "Produto não encontrado";
 
-        switch (parametro){
-            case 1: //Nome
-                atualizadoProduto.setNome(valor);
-                break;
-            case 2: //Preço
-                atualizadoProduto.setPreco(Double.parseDouble(valor));
-                break;
-            case 3: //Fornecedor
-                atualizadoProduto.setFornecedor(FDAO.buscarPorId(Integer.parseInt(valor)));
-                break;
-            case 4: //Categoria
-                atualizadoProduto.setCategoria(CDAO.buscarPorId(Integer.parseInt(valor)));
-                break;
-            default:
-                System.out.println("Parametro inválido\nNão foi possível atualizar produto");
-                return;
-        }
+        atualizadoProduto.setNome(valor);
+
         try{
             PDAO.atualizar(atualizadoProduto);
-            System.out.println("Produto atualizado com sucesso");
+            return "Produto atualizado com sucesso";
         } catch (RuntimeException e) {
-            System.out.println("Não foi possível atualizar o produto. "+e);
+            return "Não foi possível atualizar o produto. "+e;
         }
 
     }
 
-    public void excluir(int id){
+    public String atualizarPreco(int id, Double valor){
+        Produto atualizadoProduto = PDAO.buscarPorId(id);
+
+        if(Objects.isNull(atualizadoProduto)) return "Produto não encontrado";
+
+        atualizadoProduto.setPreco(valor);
+
+        try{
+            PDAO.atualizar(atualizadoProduto);
+            return "Produto atualizado com sucesso";
+        } catch (RuntimeException e) {
+            return "Não foi possível atualizar o produto. "+e;
+        }
+
+    }
+
+    public String atualizarFornecedor(int id, int idFornecedor){
+        Produto atualizadoProduto = PDAO.buscarPorId(id);
+
+        if(Objects.isNull(atualizadoProduto)) return "Produto não encontrado";
+
+        atualizadoProduto.setFornecedor(FDAO.buscarPorId(idFornecedor));
+
+        try{
+            PDAO.atualizar(atualizadoProduto);
+            return "Produto atualizado com sucesso";
+        } catch (RuntimeException e) {
+            return "Não foi possível atualizar o produto. "+e;
+        }
+
+    }
+
+    public String atualizarCategoria(int id, int idCategoria){
+        Produto atualizadoProduto = PDAO.buscarPorId(id);
+
+        if(Objects.isNull(atualizadoProduto)) return "Produto não encontrado";
+
+        atualizadoProduto.setCategoria(CDAO.buscarPorId(idCategoria));
+
+        try{
+            PDAO.atualizar(atualizadoProduto);
+            return "Produto atualizado com sucesso";
+        } catch (RuntimeException e) {
+            return "Não foi possível atualizar o produto. "+e;
+        }
+
+    }
+
+    public String excluir(int id){
         try{
             PDAO.excluir(id);
-            System.out.println("Produto excluído com sucesso");
+            return "Produto excluído com sucesso";
         } catch(RuntimeException e){
-            System.out.println("Erro ao excluir produto "+e);
+            return "Erro ao excluir produto "+e;
         }
     }
 

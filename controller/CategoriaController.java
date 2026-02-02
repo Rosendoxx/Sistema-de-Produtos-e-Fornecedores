@@ -14,16 +14,14 @@ public class CategoriaController {
         this.CDAO = new CategoriaDAO();
     }
 
-    public void cadastrar(String nome){
-        if(CDAO.buscarTodos().stream().filter(c -> c.getNome().equalsIgnoreCase(nome)).isParallel()){
-            System.out.println("Já existe uma categoria com esse nome\nNão é possível cadastrar");
-            return;
-        }
+    public String cadastrar(String nome){
+        if(CDAO.buscarTodos().stream().filter(c -> c.getNome().equalsIgnoreCase(nome)).isParallel())
+            return "Já existe uma categoria com esse nome\nNão é possível cadastrar";
         try{
             CDAO.inserir(new Categoria(0, nome));
-            System.out.println("Categoria adcionada com sucesso");
+            return "Categoria adcionada com sucesso";
         } catch (RuntimeException e){
-            System.out.println("Erro ao inserir categoria "+ e);
+            return "Erro ao inserir categoria "+ e;
         }
     }
 
@@ -35,30 +33,27 @@ public class CategoriaController {
         return CDAO.buscarPorId(id);
     }
 
-    public void atualizar(int id, String valor){
+    public String atualizarNome(int id, String valor){
         Categoria atualizadaCategoria = CDAO.buscarPorId(id);
 
-        if(Objects.isNull(atualizadaCategoria)){
-            System.out.println("Categoria não encontrado");
-            return;
-        }
+        if(Objects.isNull(atualizadaCategoria)) return "Categoria não encontrado";
 
         atualizadaCategoria.setNome(valor);
 
         try{
             CDAO.atualizar(atualizadaCategoria);
-            System.out.println("Categoria atualizada com sucesso");
+            return "Categoria atualizada com sucesso";
         } catch(RuntimeException e){
-            System.out.println("Não foi possível atualizar a categoria. "+e);
+            return "Não foi possível atualizar a categoria. " +e ;
         }
     }
 
-    public void excluir(int id){
+    public String excluir(int id){
         try{
             CDAO.excluir(id);
-            System.out.println("Categoria excluida com sucesso");
+            return "Categoria excluida com sucesso" ;
         } catch (RuntimeException e){
-            System.out.println("Erro ao excluir categoria "+e);
+            return  "Erro ao excluir categoria "+e;
         }
     }
 }
