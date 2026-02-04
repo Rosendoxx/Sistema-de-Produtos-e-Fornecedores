@@ -27,7 +27,6 @@ public abstract class GenericDAO <T> {
         try (PreparedStatement stmt = connection.prepareStatement(getInsertSQL())){
             setInsertParametros(stmt, entidade);
             stmt.executeUpdate();
-            System.out.println("Objeto inserido com sucesso");
         } catch(SQLException e){
             throw new RuntimeException("Erro ao inserir objeto "+e);
         }
@@ -68,7 +67,6 @@ public abstract class GenericDAO <T> {
         try(PreparedStatement stmt = connection.prepareStatement(sql)){
             stmt.setInt(1, id);
             stmt.executeUpdate();
-            System.out.println("Objeto excluido com sucesso");
         } catch(SQLException e){
             throw new RuntimeException("Erro ao excluir objeto "+e);
         }

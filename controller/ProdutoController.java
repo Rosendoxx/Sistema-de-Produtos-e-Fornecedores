@@ -36,7 +36,7 @@ public class ProdutoController {
             PDAO.inserir(novoProduto);
             return "Produto cadastrado com sucesso!";
         } catch(RuntimeException e){
-            return "Erro ao salvar produto no banco de dados "+e;
+            return e.toString();
         }
     }
 
@@ -59,7 +59,7 @@ public class ProdutoController {
             PDAO.atualizar(atualizadoProduto);
             return "Produto atualizado com sucesso";
         } catch (RuntimeException e) {
-            return "Não foi possível atualizar o produto. "+e;
+            return e.toString();
         }
 
     }
@@ -75,7 +75,7 @@ public class ProdutoController {
             PDAO.atualizar(atualizadoProduto);
             return "Produto atualizado com sucesso";
         } catch (RuntimeException e) {
-            return "Não foi possível atualizar o produto. "+e;
+            return e.toString();
         }
 
     }
@@ -91,7 +91,7 @@ public class ProdutoController {
             PDAO.atualizar(atualizadoProduto);
             return "Produto atualizado com sucesso";
         } catch (RuntimeException e) {
-            return "Não foi possível atualizar o produto. "+e;
+            return e.toString();
         }
 
     }
@@ -107,7 +107,7 @@ public class ProdutoController {
             PDAO.atualizar(atualizadoProduto);
             return "Produto atualizado com sucesso";
         } catch (RuntimeException e) {
-            return "Não foi possível atualizar o produto. "+e;
+            return e.toString();
         }
 
     }
@@ -117,7 +117,7 @@ public class ProdutoController {
             PDAO.excluir(id);
             return "Produto excluído com sucesso";
         } catch(RuntimeException e){
-            return "Erro ao excluir produto "+e;
+            return e.toString();
         }
     }
 

@@ -21,7 +21,7 @@ public class CategoriaController {
             CDAO.inserir(new Categoria(0, nome));
             return "Categoria adcionada com sucesso";
         } catch (RuntimeException e){
-            return "Erro ao inserir categoria "+ e;
+            return e.toString();
         }
     }
 
@@ -44,7 +44,7 @@ public class CategoriaController {
             CDAO.atualizar(atualizadaCategoria);
             return "Categoria atualizada com sucesso";
         } catch(RuntimeException e){
-            return "Não foi possível atualizar a categoria. " +e ;
+            return e.toString();
         }
     }
 
@@ -53,7 +53,7 @@ public class CategoriaController {
             CDAO.excluir(id);
             return "Categoria excluida com sucesso" ;
         } catch (RuntimeException e){
-            return  "Erro ao excluir categoria "+e;
+            return e.toString();
         }
     }
 }

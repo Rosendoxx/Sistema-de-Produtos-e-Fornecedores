@@ -14,7 +14,7 @@ public class ProdutoDAO extends GenericDAO<Produto>{
 
     @Override
     protected String getInsertSQL() {
-        return "INSERT INTO Produto (id, nome, preco, fornecedor, categoria) VALUES (?, ?, ?, ?, ?)";
+        return "INSERT INTO Produto (nome, preco, fornecedor, categoria) VALUES (?, ?, ?, ?)";
     }
 
     @Override

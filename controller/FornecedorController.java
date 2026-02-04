@@ -20,7 +20,7 @@ public class FornecedorController {
             FDAO.inserir(f);
             return "Fornecedor inserido com sucesso!";
         } catch (RuntimeException e){
-            return "Erro ao inserir usuário "+e+"\nTente novamente!";
+            return e.toString();
         }
     }
 
@@ -43,7 +43,7 @@ public class FornecedorController {
             FDAO.atualizar(atualizadoFornecedor);
             return "Fornecedor atualizado com sucesso";
         } catch(RuntimeException e){
-            return "Erro ao atualizar o fornecedor. "+e;
+            return e.toString();
         }
     }
 
@@ -58,7 +58,7 @@ public class FornecedorController {
             FDAO.atualizar(atualizadoFornecedor);
             return "Fornecedor atualizado com sucesso";
         } catch(RuntimeException e){
-            return "Erro ao atualizar o fornecedor. "+e;
+            return e.toString();
         }
     }
 
@@ -73,7 +73,7 @@ public class FornecedorController {
             FDAO.atualizar(atualizadoFornecedor);
             return "Fornecedor atualizado com sucesso";
         } catch(RuntimeException e){
-            return "Erro ao atualizar o fornecedor. "+e;
+            return e.toString();
         }
     }
 
@@ -82,7 +82,7 @@ public class FornecedorController {
             FDAO.excluir(id);
             return "Fornecedor excluído com sucesso!";
         } catch(RuntimeException e){
-            return "Erro ao excluir fornecedor "+e;
+            return e.toString();
         }
     }
 }
