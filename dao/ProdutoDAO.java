@@ -19,7 +19,10 @@ public class ProdutoDAO extends GenericDAO<Produto>{
 
     @Override
     protected String getSelectAllSQL() {
-        return "SELECT * FROM Produto";
+        return "SELECT p.*, f.nome AS fornecedor, c.nome as categoria, " +
+                "FROM Produto as p" +
+                "INNER JOIN Fornecedor AS f ON p.id_fornecedor = f.id" +
+                "INNER JOIN Categoria AS c ON p.id_categoria = c.id";
     }
 
     @Override
