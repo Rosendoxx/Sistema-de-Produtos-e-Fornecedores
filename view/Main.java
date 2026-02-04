@@ -18,7 +18,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		int opcao = 0;
-		while(opcao!=9) {
+		while(opcao!=5) {
 			menu();
 			opcao = lerInt();
 			switch (opcao) {
