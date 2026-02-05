@@ -14,14 +14,14 @@ public class ProdutoDAO extends GenericDAO<Produto>{
 
     @Override
     protected String getInsertSQL() {
-        return "INSERT INTO Produto (nome, preco, fornecedor, categoria) VALUES (?, ?, ?, ?)";
+        return "INSERT INTO Produto (nome, preco, id_fornecedor, id_categoria) VALUES (?, ?, ?, ?)";
     }
 
     @Override
     protected String getSelectAllSQL() {
-        return "SELECT p.*, f.nome AS fornecedor, c.nome as categoria, " +
-                "FROM Produto as p" +
-                "INNER JOIN Fornecedor AS f ON p.id_fornecedor = f.id" +
+        return "SELECT p.id, p.nome, p.preco, f.id AS id_fornecedor, c.id as id_categoria " +
+                "FROM Produto as p " +
+                "INNER JOIN Fornecedor AS f ON p.id_fornecedor = f.id " +
                 "INNER JOIN Categoria AS c ON p.id_categoria = c.id";
     }
 
@@ -37,11 +37,10 @@ public class ProdutoDAO extends GenericDAO<Produto>{
 
     @Override
     protected void setInsertParametros(PreparedStatement stmt, Produto p) throws SQLException {
-        stmt.setInt(1, p.getId());
-        stmt.setString(2, p.getNome());
-        stmt.setDouble(3, p.getPreco());
-        stmt.setInt(4, p.getFornecedor().getIdFornecedor());
-        stmt.setInt(5, p.getCategoria().getId());
+        stmt.setString(1, p.getNome());
+        stmt.setDouble(2, p.getPreco());
+        stmt.setInt(3, p.getFornecedor().getIdFornecedor());
+        stmt.setInt(4, p.getCategoria().getId());
     }
 
     @Override
