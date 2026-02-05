@@ -169,9 +169,9 @@ public class Main {
 	private static void excluir() {
 		int escolha = 0;
 		while (escolha<1 || escolha>3){
-			System.out.println("1 - Listar Produto");
-			System.out.println("2 - Listar Fornecedor");
-			System.out.println("3 - Listar Categoria");
+			System.out.println("1 - Excluir Produto");
+			System.out.println("2 - Excluir Fornecedor");
+			System.out.println("3 - Excluir Categoria");
 			System.out.println("Escolha: ");
 			escolha = lerInt();
 			if (escolha<1 || escolha>3) {
