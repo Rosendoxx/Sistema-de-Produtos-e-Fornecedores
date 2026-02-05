@@ -1,82 +1,67 @@
-# 📦 Sistema de Gerenciamento de Estoque (CRUD Java)
+# 📦 Sistema de Gerenciamento de Produtos e Fornecedores
 
-> Um sistema robusto de gerenciamento de produtos e fornecedores desenvolvido em Java Puro (Vanilla Java), focado em boas práticas de programação e manipulação eficiente de dados.
+![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-00000F?style=for-the-badge&logo=mysql&logoColor=white)
+![Maven](https://img.shields.io/badge/Maven-C71A36?style=for-the-badge&logo=apache-maven&logoColor=white)
 
-![Badge em Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=java&logoColor=white)
-![Badge Status](https://img.shields.io/badge/Status-Concluído-green?style=for-the-badge)
+Um sistema de gerenciamento de estoque desenvolvido em Java, focado na persistência de dados de Produtos, Fornecedores e Categorias. O projeto utiliza boas práticas de engenharia de software, incluindo arquitetura **MVC**, padrão **DAO** e segurança de credenciais com variáveis de ambiente.
 
-## 💻 Sobre o Projeto
+## 🚀 Funcionalidades
 
-Este projeto foi desenvolvido como parte do portfólio acadêmico do 2º período de Sistemas de Informação. O objetivo principal foi criar um **CRUD completo (Create, Read, Update, Delete)** sem o uso de frameworks, para solidificar o entendimento sobre **Orientação a Objetos**, **Estruturas de Dados** e a **Java Streams API**.
+- **CRUD Completo**: Criação, Leitura, Atualização e Exclusão de:
+    - Produtos
+    - Fornecedores
+    - Categorias
+- **Relacionamentos**: Associação de produtos a fornecedores e categorias específicas.
+- **Persistência**: Conexão robusta com banco de dados MySQL.
+- **Segurança**: Credenciais de banco de dados protegidas via `dotenv` (não expostas no código fonte).
 
-Diferente de CRUDS básicos, este sistema implementa conceitos reais de mercado, como **Soft Delete** (exclusão lógica) e buscas otimizadas utilizando **HashMaps**.
+## 🛠️ Tecnologias e Arquitetura
 
-## ✨ Funcionalidades Principais
+O projeto foi refatorado para seguir padrões de mercado:
 
-* **Gerenciamento de Produtos:** Cadastro, edição e listagem com validação de dados.
-* **Gerenciamento de Fornecedores:** Associação direta entre produtos e fornecedores.
-* **Categorização:** Uso de Enums para controle rígido de categorias.
-* **Relatórios Inteligentes:** Listagem filtrada e ordenada utilizando **Java Streams**:
-    * Ordenar por Preço, Nome ou Categoria.
-    * Filtrar produtos de um fornecedor específico.
-* **Exclusão Lógica (Soft Delete):** Registros são desativados em vez de apagados, mantendo a integridade do histórico.
-* **Tratamento de Erros:** Sistema robusto contra entradas inválidas (ex: digitar letras em campos numéricos) utilizando `try-catch` e loops de validação.
+- **Linguagem**: Java 17+
+- **Gerenciador de Dependências**: Apache Maven
+- **Banco de Dados**: MySQL 8.0
+- **Segurança**: Dotenv-java (para gestão de variáveis de ambiente)
+- **Padrões de Projeto**:
+    - **MVC (Model-View-Controller)**: Separação clara entre interface, lógica de controle e dados.
+    - **DAO (Data Access Object)**: Camada de abstração para operações no banco de dados.
+    - **Singleton**: Garantia de instância única para a conexão com o banco.
 
-## 🛠️ Tecnologias e Conceitos Aplicados
+## ⚙️ Pré-requisitos
 
-* **Java 17+** (Linguagem principal)
-* **Java Streams API & Lambdas** (Para filtros e ordenação funcionais)
-* **Collections Framework** (`HashMap` para acesso O(1) e `ArrayList`)
-* **POO Avançada** (Polimorfismo, Sobrescrita, Encapsulamento)
-* **Clean Code** (Nomes significativos, Single Responsibility Principle)
-* **Tratamento de Exceções** (`InputMismatchException`)
+Antes de começar, você precisará ter instalado em sua máquina:
+- [Java JDK 17+](https://www.oracle.com/java/technologies/downloads/)
+- [Maven](https://maven.apache.org/)
+- [MySQL Server](https://dev.mysql.com/downloads/installer/)
+- Uma IDE (IntelliJ IDEA, Eclipse ou VS Code)
 
-## 🧠 Destaques Técnicos
+## 📝 Como rodar o projeto
 
-### 1. Uso de Streams para Ordenação
-Em vez de usar laços `for` aninhados complexos, utilizei a API de Streams para criar consultas declarativas e limpas:
-
-```java
-// Exemplo real do código: Ordenando fornecedores por nome
-fornecedores.entrySet()
-    .stream()
-    .sorted((f1, f2) -> f1.getValue().getNome().compareToIgnoreCase(f2.getValue().getNome()))
-    .forEach(fornecedor -> System.out.println(fornecedor));
-
+### 1. Clone o repositório
+```bash
+git clone [https://github.com/Rosendoxx/Sistema-de-Produtos-e-Fornecedores.git](https://github.com/Rosendoxx/Sistema-de-Produtos-e-Fornecedores.git)
+cd Sistema-de-Produtos-e-Fornecedores
 ```
 
-### 2. Validação de Entrada Robusta
+### 2. Configure o banco de dados
+Execute os scripts sql abaixo na seguinte ordem:
+- *init.sql*
+- *insert.sql*
 
-Implementação de um mecanismo de leitura seguro que impede o view de travar (crash) caso o usuário digite um input inesperado:
-
-```public static int lerInt() {
-    while(true) {
-        try {
-            return in.nextInt(); 
-        } catch(InputMismatchException e) {
-            in.nextLine(); // Limpa o buffer
-            System.out.println("Erro: Informe apenas números inteiros.");
-        }
-    }
-}
+### 3. Configure as variáveis de ambiente
+Na raiz do projeto, crie o arquivo .env e adiciona as credenciais do SQL:
+```bash
+DB_URL=jdbc:mysql://localhost:3306/GerenciadorEstoque
+DB_USER=root
+DB_PASSWORD=sua_Senha_Do_MySQL
 ```
 
-### 3. Como Rodar o projeto
-
-**Pré-Requitos:**
-    * *Java JDK11 ou superior*
-
-**1º Clone o repositório**
-    git clone https://github.com/Rosendoxx/Sistema-de-Produtos-e-Fornecedores.git
-
-**2º Compile os arquivos**
-    javac -d bin Sistema-de-Produtos-e-Fornecedores/view*.java Sistema-de-Produtos-e-Fornecedores/model*.java
-
-**3º Execute o view**
-    java -cp bin view.Main
-
-### 4. Melhorias futuras:
-* **Implementar persitência de dados**
-* **Criar uma interface gráfica simples**
-
-## Desenvolvido por Leandro T. Rosendo
+### 4. Execute o projeto
+- Se estiver usando uma IDE, espere o Maven baixar as depedências e execute a classe Main.java
+- Se for usar o terminal:
+```bash
+mvn clean install
+mvn exec:java -Dexec.mainClass="view.Main"
+```
