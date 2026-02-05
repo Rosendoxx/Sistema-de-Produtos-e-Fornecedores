@@ -4,7 +4,9 @@
 ![MySQL](https://img.shields.io/badge/MySQL-00000F?style=for-the-badge&logo=mysql&logoColor=white)
 ![Maven](https://img.shields.io/badge/Maven-C71A36?style=for-the-badge&logo=apache-maven&logoColor=white)
 
-Um sistema de gerenciamento de estoque desenvolvido em Java, focado na persistência de dados de Produtos, Fornecedores e Categorias. O projeto utiliza boas práticas de engenharia de software, incluindo arquitetura **MVC**, padrão **DAO** e segurança de credenciais com variáveis de ambiente.
+## 💻 Sobre o Projeto
+- Um sistema de gerenciamento de estoque desenvolvido em Java, focado na persistência de dados de Produtos, Fornecedores e Categorias. O projeto utiliza boas práticas de engenharia de software, incluindo arquitetura **MVC**, padrão **DAO** e segurança de credenciais com variáveis de ambiente.
+- Este projeto foi desenvolvido inicialmente como parte do portfólio acadêmico do 2º período de Sistemas de Informação. O objetivo principal foi criar um CRUD completo (Create, Read, Update, Delete) sem o uso de frameworks, para solidificar o entendimento sobre Orientação a Objetos, Estruturas de Dados e a Java Streams API.
 
 ## 🚀 Funcionalidades
 
